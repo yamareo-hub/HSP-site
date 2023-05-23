@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSP診断テスト</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1></h1>
+    <progress class="pro" max="100" value="0"></progress>
+    <ul></ul>
+    <div class="result">あなたの診断結果は：<span data-point-num></span>点です）</div>
+    <div class="detail">12点以上はHSPとして診断されます。</div>
+
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script>
+        $(function(){
+            let count=0;
+            let point=0;
+            let hsp_jugde;
+            const list=[
+                {'question':'自分を取り巻く環境の微妙な変化によく気づくほうだ',
+            'answer':['はい','いいえ']},
+            {'question':'他人の気分に左右される',
+            'answer':['はい','いいえ']},
+            {'question':'痛みにとても敏感である',
+            'answer':['はい','いいえ']},
+            {'question':'忙しい日々が続くと、ベッドや暗い部屋などプライバシーが得られ、刺激から逃れられる場所に引き込もりたくなる',
+            'answer':['はい','いいえ']},
+            {'question':'カフェインに敏感に反応する',
+            'answer':['はい','いいえ']},
+            {'question':'明るい光や、強い匂い、ざらざらした布地、サイレンの音などに圧倒されやすい',
+            'answer':['はい','いいえ']},
+            {'question':'豊かな想像力を持ち、空想にふけりやすい',
+            'answer':['はい','いいえ']},
+            {'question':'騒音に悩まされやすい',
+            'answer':['はい','いいえ']},
+            {'question':'美術や音楽に深く心動かされる',
+            'answer':['はい','いいえ']},
+            {'question':'とても良心的である',
+            'answer':['はい','いいえ']},
+            {'question':'すぐにびっくりする',
+            'answer':['はい','いいえ']},
+            {'question':'短期間にたくさんのことをしなければならないとき、混乱してしまう',
+            'answer':['はい','いいえ']},
+            {'question':'人が何かで不快な思いをしているとき、どうすれば快適になるかすぐに気づく'+
+            '(たとえば電灯の明るさを調節したり、席を替えるなど)',
+            'answer':['はい','いいえ']},
+            {'question':'一度にたくさんのことを頼まれるのが嫌だ',
+            'answer':['はい','いいえ']},
+            {'question':'ミスをしたり物を忘れたりしないようにいつも気を付ける',
+            'answer':['はい','いいえ']},
+            {'question':'暴力的な映画やテレビ番組は見ないようにしている',
+            'answer':['はい','いいえ']},
+            {'question':'あまりにもたくさんのことが自分の周りで起こっていると、不快になり神経が高ぶる',
+            'answer':['はい','いいえ']},
+            {'question':'空腹になると、集中できないとか気分が悪くなるといった強い反応が起こる',
+            'answer':['はい','いいえ']},
+            {'question':'生活に変化があると混乱する',
+            'answer':['はい','いいえ']},
+            {'question':'デリケートな香りや味、音、音楽などを好む',
+            'answer':['はい','いいえ']},
+            {'question':'動揺するような状況を避けることを、普段の生活で最優先している',
+            'answer':['はい','いいえ']},
+            {'question':'仕事をするとき、競争させられたり、観察していると、緊張し、いつもの実力を発揮できなくなる',
+            'answer':['はい','いいえ']},
+            {'question':'子供の頃、親や教師は自分の事を「敏感だ」とか「内気だ」と思っていた',
+            'answer':['はい','いいえ']}
+            ];
+
+            function render(count){
+            $('li').remove();
+            $('h1').text(list[count]['question']);
+            list[count]['answer'].forEach(function( text ){
+                const li=`<li>${text}</li>`;
+                $('ul').append(li);
+            });
+        }
+        render(0);
+
+        function pointGet(li_index){
+            switch(li_index){
+                case 0:
+                return 1;
+                break;
+
+                case 1:
+                return 0;
+                break;
+        
+            }
+        }
+
+        $('body').on('click', 'li' ,function(){
+            const li_index=$('li').index(this);
+            point +=pointGet(li_index);
+            console.log('累積ポイントは'+point);
+            if(count<list.length-1){
+            count++;
+            render(count);
+        $('progress').val(100/(list.length/count));
+        }
+            else{
+                if(point>=12){hsp_jugde='HSPです。';}else{hsp_jugde='HSPではありません。';}
+                $('[data-point-num]').text(hsp_jugde+'(得点は'+point);
+                $('ul,h1').hide();
+                $('div.result').fadeIn();
+                $('div.detail').fadeIn();
+                $('progress').remove();
+
+            }
+        });
+
+
+        }
+        );
+    </script>
+
+
+
+</body>
+</html>
